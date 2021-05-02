@@ -1,5 +1,9 @@
 # Serilog.Sinks.SpectreConsole
 
+![Build status](https://github.com/PragmaticFlow/NBomber/actions/workflows/dotnet.yml/badge.svg?branch=dev)
+[![NuGet](https://img.shields.io/nuget/v/Serilog.Sinks.SpectreConsole.svg)](https://www.nuget.org/packages/Serilog.Sinks.SpectreConsole/)
+[![Gitter](https://badges.gitter.im/nbomber/community.svg)](https://gitter.im/nbomber/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 A Serilog sink that writes log events to console using [Spectre.Console](https://github.com/spectresystems/spectre.console). \
 Output is plain text. \
 The sink is written in F#.
