@@ -80,8 +80,9 @@ In `appsettings.json` configuration file, write the following section:
       {
         "Name": "SpectreConsole",
         "Args": {
-        "outputTemplate": "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}", 
-        "minLevel": "Verbose"
+          "outputTemplate": "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}", 
+          "minLevel": "Verbose"
+        }
       }
     ]
 }
