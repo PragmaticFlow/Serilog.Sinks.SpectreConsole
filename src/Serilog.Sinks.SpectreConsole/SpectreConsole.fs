@@ -14,7 +14,7 @@ let private create (output: TextWriter) =
 
 let render (output: TextWriter) (text) =
     let console = create(output)
-    text |> Markup |> console.Render
+    text |> Markup |> console.Write
 
 let writeException (output: TextWriter) (ex) =
     let console = create(output)
