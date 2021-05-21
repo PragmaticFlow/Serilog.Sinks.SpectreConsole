@@ -8,13 +8,13 @@ let private create (output: TextWriter) =
     AnsiConsoleSettings(
         ColorSystem = ColorSystemSupport.Detect,
         Interactive = InteractionSupport.No,
-        Out = output
+        Out = AnsiConsoleOutput(output)
     )
     |> AnsiConsole.Create
 
 let render (output: TextWriter) (text) =
     let console = create(output)
-    text |> Markup |> console.Render
+    text |> Markup |> console.Write
 
 let writeException (output: TextWriter) (ex) =
     let console = create(output)
