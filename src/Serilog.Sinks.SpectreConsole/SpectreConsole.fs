@@ -8,7 +8,7 @@ let private create (output: TextWriter) =
     AnsiConsoleSettings(
         ColorSystem = ColorSystemSupport.Detect,
         Interactive = InteractionSupport.No,
-        Out = output
+        Out = AnsiConsoleOutput(output)
     )
     |> AnsiConsole.Create
 
