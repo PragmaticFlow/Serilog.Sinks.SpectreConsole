@@ -3,7 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>PragmaticFlow</Authors>
         <Company>PragmaticFlow</Company>
-        <Version>0.1.1</Version>
+        <Version>0.2.0</Version>
         <Copyright>PragmaticFlow@2021</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</PackageProjectUrl>
@@ -12,13 +12,15 @@
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <Description>A Serilog sink that writes log events to console using Spectre.Console.</Description>
+        <PackageReleaseNotes>v0.2.0
+- Support of Spectre.Console 0.39.0 by @Twinki</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="SpectreConsole.fs"/>
-        <Compile Include="LevelOutputFormat.fs"/>
-        <Compile Include="SpectreConsoleTextFormatter.fs"/>
-        <Compile Include="SpectreConsoleSerilogSink.fs"/>
+        <Compile Include="SpectreConsole.fs" />
+        <Compile Include="LevelOutputFormat.fs" />
+        <Compile Include="SpectreConsoleTextFormatter.fs" />
+        <Compile Include="SpectreConsoleSerilogSink.fs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,8 +28,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Serilog" Version="2.10.0"/>
-        <PackageReference Include="Spectre.Console" Version="0.39.0"/>
+        <PackageReference Include="Serilog" Version="2.10.0" />
+        <PackageReference Include="Spectre.Console" Version="0.39.0" />
     </ItemGroup>
 
     <ItemGroup>
