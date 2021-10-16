@@ -29,11 +29,11 @@
 
     <ItemGroup>
         <PackageReference Include="Serilog" Version="2.10.0" />
-        <PackageReference Include="Spectre.Console" Version="0.39.0" />
+        <PackageReference Include="Spectre.Console" Version="0.42.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Update="FSharp.Core" Version="5.0.0" />
+        <PackageReference Update="FSharp.Core" Version="6.0.0" />
     </ItemGroup>
 
 </Project>
