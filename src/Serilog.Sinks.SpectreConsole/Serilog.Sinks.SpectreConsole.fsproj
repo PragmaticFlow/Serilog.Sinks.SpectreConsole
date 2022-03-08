@@ -6,8 +6,8 @@
         <Version>0.2.0</Version>
         <Copyright>PragmaticFlow@2021</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageProjectUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/olegtarasov/Serilog.Sinks.SpectreConsole</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/olegtarasov/Serilog.Sinks.SpectreConsole</RepositoryUrl>
         <PackageTags>serilog, spectre.console</PackageTags>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -29,11 +29,8 @@
 
     <ItemGroup>
         <PackageReference Include="Serilog" Version="2.10.0" />
-        <PackageReference Include="Spectre.Console" Version="0.42.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Update="FSharp.Core" Version="5.0.0" />
+        <PackageReference Include="Spectre.Console" Version="0.43.0" />
+        <PackageReference Update="FSharp.Core" Version="6.0.3" />
     </ItemGroup>
 
 </Project>
