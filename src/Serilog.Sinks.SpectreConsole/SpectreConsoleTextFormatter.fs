@@ -31,13 +31,13 @@ module internal MessageTemplate =
         |> Seq.exists(fun token ->
             (token :? PropertyToken) && (token :?> PropertyToken).PropertyName = propName
         )
-            
+
 module internal SpectreConsoleTextFormatter =
 
-    let private textRenderer (token: TextToken) (logEvent: LogEvent, output: TextWriter) =
+    let private textRenderer (token: TextToken) (logEvent: LogEvent) (output: TextWriter) =
         output.Write(token.Text)
 
-    let private propRenderer (token: PropertyToken) (logEvent: LogEvent, output: TextWriter) =
+    let private propRenderer (token: PropertyToken) (logEvent: LogEvent) (output: TextWriter) =
         if logEvent.Properties.ContainsKey(token.PropertyName) then
             logEvent.Properties.[token.PropertyName]
             |> LogEventPropertyValue.toString
@@ -45,22 +45,22 @@ module internal SpectreConsoleTextFormatter =
             |> SpectreConsole.highlightProp
             |> SpectreConsole.render output
 
-    let private messageRenderer (token: PropertyToken) (logEvent: LogEvent, output: TextWriter) =
+    let private messageRenderer (token: PropertyToken) (logEvent: LogEvent) (output: TextWriter) =
         let format = token.Format
 
         logEvent.MessageTemplate.Tokens
         |> Seq.iter(fun token ->
             if token :? TextToken then
-                textRenderer (token :?> TextToken) (logEvent, output)
+                textRenderer (token :?> TextToken) logEvent output
             else
-                propRenderer (token :?> PropertyToken) (logEvent, output)
+                propRenderer (token :?> PropertyToken) logEvent output
         )
-    
-    let private timestampRenderer (token: PropertyToken) (logEvent: LogEvent, output: TextWriter) =
+
+    let private timestampRenderer (token: PropertyToken) (logEvent: LogEvent) (output: TextWriter) =
         let sv = ScalarValue(logEvent.Timestamp)
         sv.Render(output, token.Format)
 
-    let private levelRenderer (token: PropertyToken) (logEvent: LogEvent, output: TextWriter) =
+    let private levelRenderer (token: PropertyToken) (logEvent: LogEvent) (output: TextWriter) =
         let levelMoniker = LevelOutputFormat.getLevelMoniker token.Format logEvent.Level
 
         match logEvent.Level with
@@ -73,14 +73,14 @@ module internal SpectreConsoleTextFormatter =
         | _                         -> levelMoniker
         |> SpectreConsole.render output
 
-    let private newLineRenderer (logEvent: LogEvent, output: TextWriter) =
+    let private newLineRenderer (logEvent: LogEvent) (output: TextWriter) =
         output.WriteLine()
-     
-    let private exceptionRenderer (logEvent: LogEvent, output: TextWriter) =
+
+    let private exceptionRenderer (logEvent: LogEvent) (output: TextWriter) =
         if not (isNull logEvent.Exception) then
             logEvent.Exception |> SpectreConsole.writeException output
 
-    let private propertiesRenderer (token: PropertyToken) (outputTemplate: MessageTemplate) (logEvent: LogEvent, output: TextWriter) =
+    let private propertiesRenderer (token: PropertyToken) (outputTemplate: MessageTemplate) (logEvent: LogEvent) (output: TextWriter) =
         let shouldBeRendered (propName: string, logEvent: LogEvent, outputTemplate: MessageTemplate) =
             let containsPropName = MessageTemplate.containsPropName propName
             let result = not(containsPropName logEvent.MessageTemplate) && not(containsPropName outputTemplate)
@@ -95,8 +95,8 @@ module internal SpectreConsoleTextFormatter =
         |> SpectreConsole.highlightMuted
         |> SpectreConsole.render output
 
-    let private eventPropRenderer (token: PropertyToken) (logEvent: LogEvent, output: TextWriter) =
-        propRenderer (token) (logEvent, output)
+    let private eventPropRenderer (token: PropertyToken) (logEvent: LogEvent) (output: TextWriter) =
+        propRenderer token logEvent output
 
     let private createPropTokenRenderer (outputTemplate: MessageTemplate) (token: PropertyToken) =
         match token.PropertyName with
@@ -114,15 +114,15 @@ module internal SpectreConsoleTextFormatter =
         else
             createPropTokenRenderer outputTemplate (token :?> PropertyToken)
 
-type SpectreConsoleRenderer = (LogEvent * TextWriter) -> unit
-            
-type SpectreConsoleTextFormatter (outputTemplate: string) = 
+type SpectreConsoleRenderer = LogEvent -> TextWriter -> unit
 
-    let mutable _renderers: SpectreConsoleRenderer[] = Array.empty<SpectreConsoleRenderer>
+type SpectreConsoleTextFormatter (outputTemplate: string) =
+
+    let mutable _renderers = Array.empty<SpectreConsoleRenderer>
 
     do
         if isNull outputTemplate then
-            nameof outputTemplate |> ArgumentNullException |> raise   
+            nameof outputTemplate |> ArgumentNullException |> raise
 
         let template = MessageTemplateParser().Parse(outputTemplate)
         _renderers <- template.Tokens |> Seq.map(SpectreConsoleTextFormatter.createRenderer template) |> Array.ofSeq
@@ -130,8 +130,8 @@ type SpectreConsoleTextFormatter (outputTemplate: string) =
     interface ITextFormatter with
         member _.Format(logEvent: LogEvent, output: TextWriter) =
             if isNull logEvent then
-                nameof logEvent |> ArgumentNullException |> raise   
+                nameof logEvent |> ArgumentNullException |> raise
             if isNull output then
                 nameof output |> ArgumentNullException |> raise
 
-            _renderers |> Seq.iter(fun renderer -> renderer(logEvent, output))
+            _renderers |> Array.iter(fun renderer -> renderer logEvent output)

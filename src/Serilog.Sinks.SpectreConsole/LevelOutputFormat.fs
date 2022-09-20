@@ -73,14 +73,14 @@ let private getMonikerWidth (format: string, defaultValue: int) =
             defaultValue
     else
         defaultValue
-            
+
 let getLevelMoniker (format: string) (level: LogEventLevel) =
     if levelMonikers.ContainsKey(level) then
         let caseFormat = getCaseFormat(format, titleCaseFormat)
         let monikerWidth = getMonikerWidth(format, 3)
-        let monikers = levelMonikers.[level].[caseFormat]
+        let monikers = levelMonikers[level][caseFormat]
         let index = Math.Min(monikerWidth, monikers.Length) - 1
-        let moniker = monikers.[index]
+        let moniker = monikers[index]
         moniker
     else
         level.ToString()
