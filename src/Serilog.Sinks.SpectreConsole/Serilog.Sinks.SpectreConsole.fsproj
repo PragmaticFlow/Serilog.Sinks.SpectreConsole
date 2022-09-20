@@ -3,7 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>Yaroshvitaliy,Anton Moldovan</Authors>
         <Company>NBomber</Company>
-        <Version>0.2.0</Version>
+        <Version>0.3.0</Version>
         <Copyright>PragmaticFlow@2022</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</PackageProjectUrl>
