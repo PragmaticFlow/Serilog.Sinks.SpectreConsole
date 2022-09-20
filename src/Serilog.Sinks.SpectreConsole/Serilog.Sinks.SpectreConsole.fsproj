@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>PragmaticFlow</Authors>
-        <Company>PragmaticFlow</Company>
+        <Authors>Yaroshvitaliy,Anton Moldovan</Authors>
+        <Company>NBomber</Company>
         <Version>0.2.0</Version>
-        <Copyright>PragmaticFlow@2021</Copyright>
+        <Copyright>PragmaticFlow@2022</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</PackageProjectUrl>
         <RepositoryUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</RepositoryUrl>
@@ -12,8 +12,6 @@
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <Description>A Serilog sink that writes log events to console using Spectre.Console.</Description>
-        <PackageReleaseNotes>v0.2.0
-- Support of Spectre.Console 0.39.0 by @Twinki</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,7 +27,7 @@
 
     <ItemGroup>
         <PackageReference Include="Serilog" Version="2.10.0" />
-        <PackageReference Include="Spectre.Console" Version="0.39.0" />
+        <PackageReference Include="Spectre.Console" Version="0.45.0" />
     </ItemGroup>
 
     <ItemGroup>
