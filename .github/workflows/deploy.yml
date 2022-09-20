@@ -18,6 +18,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Pack
-      run: dotnet pack src/NBomber.Http/NBomber.Http.fsproj -c Release -o artifacts --include-source
+      run: dotnet pack src/Serilog.Sinks.SpectreConsole/Serilog.Sinks.SpectreConsole.fsproj -c Release -o artifacts --include-source
     - name: Publish
       run: dotnet nuget push artifacts/**.nupkg -s https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }}
