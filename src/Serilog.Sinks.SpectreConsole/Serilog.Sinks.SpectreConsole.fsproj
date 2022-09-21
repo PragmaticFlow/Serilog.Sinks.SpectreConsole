@@ -5,6 +5,8 @@
         <Company>NBomber</Company>
         <Version>0.3.0</Version>
         <Copyright>PragmaticFlow@2022</Copyright>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</PackageProjectUrl>
         <RepositoryUrl>https://github.com/PragmaticFlow/Serilog.Sinks.SpectreConsole</RepositoryUrl>
