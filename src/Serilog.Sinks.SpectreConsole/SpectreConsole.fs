@@ -1,27 +1,21 @@
 module internal SpectreConsole
 
-open System.IO
-
 open Spectre.Console
 
-let private create (output: TextWriter) =
-    AnsiConsoleSettings(
-        ColorSystem = ColorSystemSupport.Detect,
-        Interactive = InteractionSupport.No,
-        Out = AnsiConsoleOutput(output)
-    )
-    |> AnsiConsole.Create
+let writeText (text: string) =
+    text |> Text |> AnsiConsole.Write
 
-let render (output: TextWriter) (text) =
-    let console = create(output)
-    text |> Markup |> console.Write
+let writeMarkup (text: string) =
+    AnsiConsole.Write(Markup text)
 
-let writeException (output: TextWriter) (ex) =
-    let console = create(output)
-    console.WriteException(ex)
+let writeException (ex: exn) =
+    AnsiConsole.WriteException ex
+
+let writeNewLine () =
+    AnsiConsole.WriteLine()
 
 let escapeMarkup (text) =
-    Markup.Escape(text)
+    Markup.Escape text
 
 let highlightProp (text) =
     $"[lime]{text}[/]"

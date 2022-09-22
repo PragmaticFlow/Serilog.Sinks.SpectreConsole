@@ -7,6 +7,9 @@ open Serilog
 open Serilog.Events
 open Serilog.Sinks.SpectreConsole
 
+type User = {
+    Name: string
+}
 
 [<EntryPoint>]
 let main argv =
@@ -30,6 +33,8 @@ let main argv =
     //        .ReadFrom.Configuration(configuration)
     //        .CreateLogger()
 
+    let user = { Name = "test_user" }
+    Log.Information($"%A{user}")
     Log.Information("symbol {")
 
     Log.Verbose("Verbose level example with {0}", "parameter")
