@@ -27,6 +27,8 @@ namespace CSharpExample
             //    .ReadFrom.Configuration(configuration)
             //    .CreateLogger();
 
+            Log.Information("symbol {");
+
             Log.Verbose("Verbose level example with {0}", "parameter");
             Log.Debug("Debug level example with {0}", "parameter");
             Log.Information("Information level example with {0}", "parameter");
