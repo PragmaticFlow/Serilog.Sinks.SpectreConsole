@@ -3,6 +3,7 @@ namespace Serilog.Sinks.SpectreConsole
 open Serilog.Events
 open Serilog.Formatting.Display
 open Serilog.Parsing
+open Spectre.Console.Rendering
 
 module internal LogEventPropertyValue =
 
@@ -24,17 +25,28 @@ module internal MessageTemplate =
 
 module internal SpectreRenderer =
 
+    type RenderableCollection(items: IRenderable seq) =
+
+        interface IRenderable with
+            member this.Measure(context, maxWidth) =
+                Measurement() // not used
+
+            member this.Render(context, maxWidth) =
+                items
+                |> Seq.collect(fun x -> x.Render(context, maxWidth))
+
     let textRenderer (token: TextToken) (logEvent: LogEvent) =
         SpectreConsole.text token.Text
 
     let propRenderer (token: PropertyToken) (logEvent: LogEvent) =
-        logEvent.Properties
-        |> Seq.map(fun x -> LogEventProperty(x.Key, x.Value))
-        |> StructureValue
-        |> StructureValue.toString token
-        |> SpectreConsole.escapeMarkup
-        |> SpectreConsole.highlightProp
-        |> SpectreConsole.markup
+        if logEvent.Properties.ContainsKey(token.PropertyName) then
+            logEvent.Properties[token.PropertyName]
+            |> LogEventPropertyValue.toString token
+            |> SpectreConsole.escapeMarkup
+            |> SpectreConsole.highlightProp
+            |> SpectreConsole.markup
+        else
+            SpectreConsole.empty
 
     let messageRenderer (logEvent: LogEvent) =
         logEvent.MessageTemplate.Tokens
@@ -69,7 +81,10 @@ module internal SpectreRenderer =
         SpectreConsole.newLine
 
     let exceptionRenderer (logEvent: LogEvent) =
-        SpectreConsole.error logEvent.Exception
+        if isNull logEvent.Exception
+            then SpectreConsole.empty
+        else
+            SpectreConsole.error logEvent.Exception
 
     let propertiesRenderer (token: PropertyToken) (outputTemplate: MessageTemplate) (logEvent: LogEvent) =
 
@@ -95,12 +110,12 @@ module internal SpectreRenderer =
 
         | :? PropertyToken as t ->
             match t.PropertyName with
-            | OutputProperties.MessagePropertyName       -> messageRenderer
-            | OutputProperties.TimestampPropertyName     -> timestampRenderer t >> List.singleton
-            | OutputProperties.LevelPropertyName         -> levelRenderer t >> List.singleton
-            | OutputProperties.NewLinePropertyName       -> newLineRenderer >> List.singleton
-            | OutputProperties.ExceptionPropertyName     -> exceptionRenderer >> List.singleton
-            | OutputProperties.PropertiesPropertyName    -> propertiesRenderer t outputTemplate >> List.singleton
-            | _                                          -> eventPropRenderer t >> List.singleton
+            | OutputProperties.MessagePropertyName    -> messageRenderer
+            | OutputProperties.TimestampPropertyName  -> timestampRenderer t >> List.singleton
+            | OutputProperties.LevelPropertyName      -> levelRenderer t >> List.singleton
+            | OutputProperties.NewLinePropertyName    -> newLineRenderer >> List.singleton
+            | OutputProperties.ExceptionPropertyName  -> exceptionRenderer >> List.singleton
+            | OutputProperties.PropertiesPropertyName -> propertiesRenderer t outputTemplate >> List.singleton
+            | _                                       -> eventPropRenderer t >> List.singleton
 
         | _ -> failwith "unsupported token"

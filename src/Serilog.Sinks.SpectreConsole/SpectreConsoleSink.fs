@@ -7,6 +7,7 @@ open Serilog.Configuration
 open Serilog.Core
 open Serilog.Events
 open Serilog.Parsing
+open Serilog.Sinks.SpectreConsole.SpectreRenderer
 open Spectre.Console
 
 module internal LogEvent =
@@ -24,7 +25,8 @@ type SpectreConsoleSink (outputTemplate: string) =
         member _.Emit(logEvent: LogEvent) =
             _renderers
             |> Seq.collect(fun renderer -> renderer logEvent)
-            |> Seq.iter AnsiConsole.Write
+            |> RenderableCollection
+            |> AnsiConsole.Write
 
 [<Extension>]
 type SpectreConsoleSinkExtensions() =

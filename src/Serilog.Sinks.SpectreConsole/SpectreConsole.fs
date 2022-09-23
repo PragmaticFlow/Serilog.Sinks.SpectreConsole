@@ -3,6 +3,9 @@ module internal SpectreConsole
 open Spectre.Console
 open Spectre.Console.Rendering
 
+let empty: IRenderable =
+    Text.Empty
+
 let text (text): IRenderable =
     Text text
 

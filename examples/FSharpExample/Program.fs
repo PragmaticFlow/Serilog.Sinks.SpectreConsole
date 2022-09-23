@@ -20,6 +20,7 @@ let main argv =
         LoggerConfiguration()
             .WriteTo.SpectreConsole("{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}",  minLevel = LogEventLevel.Verbose)
             .MinimumLevel.Verbose()
+            .Enrich.WithProperty("SessionId", "My Session 1111 ID")
             .CreateLogger()
 
     // or for configuration via appsettings.json
@@ -35,28 +36,28 @@ let main argv =
     //        .ReadFrom.Configuration(configuration)
     //        .CreateLogger()
 
-    // let status = AnsiConsole.Status()
-    // status.Start("my status", fun ctx ->
-    //     let user = { Name = "test_user" }
-    //     Log.Information($"%A{user}")
-    //     Log.Information("symbol {")
-    //
-    //     Log.Verbose("Verbose level example with {0}", "parameter")
-    //     Log.Debug("Debug level example with {0}", "parameter")
-    //     Log.Information("Information level example with {0}", "parameter")
-    //     Log.Warning("Warning level example with {0}", "parameter")
-    //
-    //     Task.Delay(5000).Wait()
-    // )
+    let status = AnsiConsole.Status()
+    status.Start("my status", fun ctx ->
+        let user = { Name = "test_user" }
+        Log.Information($"%A{user}")
+        Log.Information("symbol {")
 
-    let user = { Name = "test_user" }
-    Log.Information($"%A{user}")
-    Log.Information("symbol {")
+        Log.Verbose("Verbose level example with {0}", "parameter")
+        Log.Debug("Debug level example with {0}", "parameter")
+        Log.Information("Information level example with {0}", "parameter")
+        Log.Warning("Warning level example with {0}", "parameter")
 
-    Log.Verbose("Verbose level example with {0}", "parameter")
-    Log.Debug("Debug level example with {0}", "parameter")
-    Log.Information("Information level example with {0}", "parameter")
-    Log.Warning("Warning level example with {0}", "parameter")
+        Task.Delay(5000).Wait()
+    )
+
+    // let user = { Name = "test_user" }
+    // Log.Information($"%A{user}")
+    // Log.Information("symbol {")
+    //
+    // Log.Verbose("Verbose level example with {0}", "parameter")
+    // Log.Debug("Debug level example with {0}", "parameter")
+    // Log.Information("Information level example with {0}", "parameter")
+    // Log.Warning("Warning level example with {0}", "parameter")
 
     try
         raise (Exception "Message")
