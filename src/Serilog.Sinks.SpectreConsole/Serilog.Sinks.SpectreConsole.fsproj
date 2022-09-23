@@ -3,7 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>Yaroshvitaliy,Anton Moldovan</Authors>
         <Company>NBomber</Company>
-        <Version>0.3.1</Version>
+        <Version>0.3.2</Version>
         <Copyright>PragmaticFlow@2022</Copyright>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
