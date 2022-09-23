@@ -18,7 +18,7 @@ let main argv =
 
     Log.Logger <-
         LoggerConfiguration()
-            .WriteTo.spectreConsole("{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}",  minLevel = LogEventLevel.Verbose)
+            .WriteTo.SpectreConsole("{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}",  minLevel = LogEventLevel.Verbose)
             .MinimumLevel.Verbose()
             .CreateLogger()
 
