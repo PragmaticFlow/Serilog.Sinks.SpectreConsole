@@ -14,7 +14,7 @@ You can install it using the following command:
 
 `Install-Package Serilog.Sinks.SpectreConsole`
 
-To enable the sink, use .SpectreConsole() extension method for C#:
+To enable the sink, use .SpectreConsole() extension method.
 
 ```csharp
 Log.Logger = new LoggerConfiguration()
@@ -25,17 +25,6 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("Information level example with {0}", "parameter");
 ```
 
-For F#, use `.spectreConsole` instead:
-```
-Log.Logger <- 
-    LoggerConfiguration() 
-        .WriteTo.spectreConsole("{Timestamp:HH:mm:ss} [{Level:u4}] {Message:lj}{NewLine}{Exception}",  minLevel = LogEventLevel.Verbose)
-        .MinimumLevel.Verbose()
-        .CreateLogger()
-
-Log.Information("Information level example with {0}", "parameter")
-```
-
 For more information, take a look at examples.
 
 ## Configuration via `appsettings.json`
@@ -44,10 +33,9 @@ To configure the sink via 'appsettings.json' configuration, you have to install 
 `Install-Package Microsoft.Extensions.Configuration.Json`
 `Install-Package Serilog.Settings.Configuration`
 
-Then use `ReadFrom.Configuration()` method:
+Then use `ReadFrom.Configuration()` method.
 
-C# example:
-```charp
+```csharp
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json")
@@ -58,20 +46,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 ```
 
-F# example:
-```fsharp
-let configuration = 
-    ConfigurationBuilder()
-        .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json")
-        .Build()
-
-Log.Logger <- 
-    LoggerConfiguration() 
-        .ReadFrom.Configuration()
-        .CreateLogger()
-```
-
 In `appsettings.json` configuration file, write the following section:
 
 ```json
@@ -80,7 +54,7 @@ In `appsettings.json` configuration file, write the following section:
       {
         "Name": "SpectreConsole",
         "Args": {
-          "outputTemplate": "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}", 
+          "outputTemplate": "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
           "minLevel": "Verbose"
         }
       }
