@@ -24,32 +24,32 @@ module internal MessageTemplate =
 
 module internal SpectreRenderer =
 
-    type LogEventRenderer = LogEvent -> unit
-
     let textRenderer (token: TextToken) (logEvent: LogEvent) =
-        SpectreConsole.writeText token.Text
+        SpectreConsole.text token.Text
 
     let propRenderer (token: PropertyToken) (logEvent: LogEvent) =
-        if logEvent.Properties.ContainsKey token.PropertyName then
-            logEvent.Properties[token.PropertyName]
-            |> LogEventPropertyValue.toString token
-            |> SpectreConsole.escapeMarkup
-            |> SpectreConsole.highlightProp
-            |> SpectreConsole.writeMarkup
+        logEvent.Properties
+        |> Seq.map(fun x -> LogEventProperty(x.Key, x.Value))
+        |> StructureValue
+        |> StructureValue.toString token
+        |> SpectreConsole.escapeMarkup
+        |> SpectreConsole.highlightProp
+        |> SpectreConsole.markup
 
     let messageRenderer (logEvent: LogEvent) =
         logEvent.MessageTemplate.Tokens
-        |> Seq.iter(fun token ->
+        |> Seq.map(fun token ->
             if token :? TextToken then
                 textRenderer (token :?> TextToken) logEvent
             else
                 propRenderer (token :?> PropertyToken) logEvent
         )
+        |> Seq.toList
 
     let timestampRenderer (token: PropertyToken) (logEvent: LogEvent)=
         token.Format
         |> logEvent.Timestamp.ToString
-        |> SpectreConsole.writeText
+        |> SpectreConsole.text
 
     let levelRenderer (token: PropertyToken) (logEvent: LogEvent) =
 
@@ -63,14 +63,13 @@ module internal SpectreRenderer =
         | LogEventLevel.Error       -> levelMoniker |> SpectreConsole.highlightError
         | LogEventLevel.Fatal       -> levelMoniker |> SpectreConsole.highlightFatal
         | _                         -> levelMoniker
-        |> SpectreConsole.writeMarkup
+        |> SpectreConsole.markup
 
     let newLineRenderer (logEvent: LogEvent) =
-        SpectreConsole.writeNewLine ()
+        SpectreConsole.newLine
 
     let exceptionRenderer (logEvent: LogEvent) =
-        if not (isNull logEvent.Exception) then
-            SpectreConsole.writeException logEvent.Exception
+        SpectreConsole.error logEvent.Exception
 
     let propertiesRenderer (token: PropertyToken) (outputTemplate: MessageTemplate) (logEvent: LogEvent) =
 
@@ -85,23 +84,23 @@ module internal SpectreRenderer =
         |> StructureValue.toString token
         |> SpectreConsole.escapeMarkup
         |> SpectreConsole.highlightMuted
-        |> SpectreConsole.writeMarkup
+        |> SpectreConsole.markup
 
     let eventPropRenderer (token: PropertyToken) (logEvent: LogEvent) =
         propRenderer token logEvent
 
-    let private createPropTokenRenderer (outputTemplate: MessageTemplate) (token: PropertyToken) =
-        match token.PropertyName with
-        | OutputProperties.MessagePropertyName       -> messageRenderer
-        | OutputProperties.TimestampPropertyName     -> timestampRenderer token
-        | OutputProperties.LevelPropertyName         -> levelRenderer token
-        | OutputProperties.NewLinePropertyName       -> newLineRenderer
-        | OutputProperties.ExceptionPropertyName     -> exceptionRenderer
-        | OutputProperties.PropertiesPropertyName    -> propertiesRenderer token outputTemplate
-        | _                                          -> eventPropRenderer token
-
     let createRenderer (outputTemplate: MessageTemplate) (token: MessageTemplateToken) =
-        if token :? TextToken then
-            textRenderer(token :?> TextToken)
-        else
-            createPropTokenRenderer outputTemplate (token :?> PropertyToken)
+        match token with
+        | :? TextToken as t -> textRenderer t >> List.singleton
+
+        | :? PropertyToken as t ->
+            match t.PropertyName with
+            | OutputProperties.MessagePropertyName       -> messageRenderer
+            | OutputProperties.TimestampPropertyName     -> timestampRenderer t >> List.singleton
+            | OutputProperties.LevelPropertyName         -> levelRenderer t >> List.singleton
+            | OutputProperties.NewLinePropertyName       -> newLineRenderer >> List.singleton
+            | OutputProperties.ExceptionPropertyName     -> exceptionRenderer >> List.singleton
+            | OutputProperties.PropertiesPropertyName    -> propertiesRenderer t outputTemplate >> List.singleton
+            | _                                          -> eventPropRenderer t >> List.singleton
+
+        | _ -> failwith "unsupported token"

@@ -1,18 +1,19 @@
 module internal SpectreConsole
 
 open Spectre.Console
+open Spectre.Console.Rendering
 
-let writeText (text: string) =
-    text |> Text |> AnsiConsole.Write
+let text (text): IRenderable =
+    Text text
 
-let writeMarkup (text: string) =
-    AnsiConsole.Write(Markup text)
+let markup (text): IRenderable =
+    Markup text
 
-let writeException (ex: exn) =
-    AnsiConsole.WriteException ex
+let error (ex: exn): IRenderable =
+    ex.GetRenderable()
 
-let writeNewLine () =
-    AnsiConsole.WriteLine()
+let newLine: IRenderable =
+    Text.NewLine
 
 let escapeMarkup (text) =
     Markup.Escape text
