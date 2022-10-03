@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Serilog;
@@ -31,8 +31,8 @@ namespace CSharpExample
 
             Log.Verbose("Verbose level example with {0}", "parameter");
             Log.Debug("Debug level example with {0}", "parameter");
-            Log.Information("Information level example with {0}", "parameter");
-            Log.Warning("Warning level example with {0}", "parameter");
+            Log.Information("[underline]Information[/] level example with {0}", "parameter");
+            Log.Warning("Warning [cyan]level[/] example with {0}", "parameter");
 
             try
             {
