@@ -4,7 +4,7 @@
         <Authors>Yaroshvitaliy,Anton Moldovan</Authors>
         <Company>NBomber</Company>
         <Version>0.3.3</Version>
-        <Copyright>PragmaticFlow@2022</Copyright>
+        <Copyright>NBomber@2026</Copyright>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -16,6 +16,13 @@
         <Description>A Serilog sink that writes log events to console using Spectre.Console.</Description>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <NuGetAudit>true</NuGetAudit>
+        <NuGetAuditMode>all</NuGetAuditMode>
+        <NuGetAuditLevel>low</NuGetAuditLevel>
+        <WarningsAsErrors>NU1900;NU1901;NU1902;NU1903;NU1904</WarningsAsErrors>
+    </PropertyGroup>
+    
     <ItemGroup>
         <Compile Include="SpectreConsole.fs" />
         <Compile Include="LevelOutputFormat.fs" />
@@ -28,12 +35,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Serilog" Version="2.10.0" />
-        <PackageReference Include="Spectre.Console" Version="0.45.0" />
+        <PackageReference Include="Serilog" Version="4.3.1" />
+        <PackageReference Include="Spectre.Console" Version="0.57.2" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Update="FSharp.Core" Version="6.0.5" />
+        <PackageReference Update="FSharp.Core" Version="10.1.302" />
     </ItemGroup>
 
 </Project>
