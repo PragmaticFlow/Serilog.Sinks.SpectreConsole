@@ -38,6 +38,9 @@ module internal SpectreRenderer =
     let textRenderer (token: TextToken) (logEvent: LogEvent) =
         SpectreConsole.text token.Text
 
+    let markupRenderer (token: TextToken) (logEvent: LogEvent) =
+        SpectreConsole.markup token.Text
+
     let propRenderer (token: PropertyToken) (logEvent: LogEvent) =
         if logEvent.Properties.ContainsKey(token.PropertyName) then
             logEvent.Properties[token.PropertyName]
@@ -52,7 +55,7 @@ module internal SpectreRenderer =
         logEvent.MessageTemplate.Tokens
         |> Seq.map(fun token ->
             if token :? TextToken then
-                textRenderer (token :?> TextToken) logEvent
+                markupRenderer (token :?> TextToken) logEvent
             else
                 propRenderer (token :?> PropertyToken) logEvent
         )
